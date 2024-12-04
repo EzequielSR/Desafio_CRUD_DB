@@ -43,7 +43,7 @@ public class PessoaService {
     public Pessoa atualizarPessoa(Long id, Pessoa dadosAtualizados) {
         Pessoa pessoaExistente = pessoaRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Pessoa não encontrada"));
 
-        pessoaExistente.setNome(dadosAtualizados.getNome());
+        pessoaExistente.setNome(dadosAtualizados.getNome().trim());
         pessoaExistente.setDataNascimento(dadosAtualizados.getDataNascimento());
         pessoaExistente.setCpf(dadosAtualizados.getCpf());
 
@@ -57,8 +57,8 @@ public class PessoaService {
 
     @Transactional
     public void excluirPessoa(Long id) {
-        Pessoa pessoa = pessoaRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Pessoa não encontrada"));
-        Period.between(pessoa.getDataNascimento(), LocalDate.now());
+        Pessoa pessoa = pessoaRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pessoa não encontrada"));
+        pessoaRepository.deleteById(id);
     }
 
     public int calcularIdade(Long id) {
