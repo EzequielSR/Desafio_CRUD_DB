@@ -56,9 +56,9 @@ public class PessoaService {
     }
 
     @Transactional
-    public int excluirPessoa(Long id){
+    public void excluirPessoa(Long id){
         Pessoa pessoa = pessoaRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("Pessoa não encontrada"));
-        return Period.between(pessoa.getDataNascimento(), LocalDate.now()).getYears();
+        Period.between(pessoa.getDataNascimento(), LocalDate.now());
     }
 
     public int calcularIdade(Long id) {

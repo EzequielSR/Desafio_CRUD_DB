@@ -2,6 +2,7 @@ package com.example.Desafio_CRUD_DB.controller;
 
 import com.example.Desafio_CRUD_DB.entity.Pessoa;
 import com.example.Desafio_CRUD_DB.service.PessoaService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,8 +24,14 @@ public class PessoaController {
     }
 
     @PostMapping
-    public ResponseEntity<Pessoa> criarPessoa(@RequestBody Pessoa pessoa){
-        return ResponseEntity.ok(pessoaService.criarPessoa(pessoa));
+    public ResponseEntity<?>  criarPessoa(@RequestBody Pessoa pessoa){
+        try {
+            Pessoa novaPessoa = pessoaService.criarPessoa(pessoa);
+            return ResponseEntity.status(HttpStatus.CREATED).body(novaPessoa);
+        }catch (IllegalArgumentException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+//        return ResponseEntity.ok(pessoaService.criarPessoa(pessoa));
     }
 
     @PutMapping("/{id}")
