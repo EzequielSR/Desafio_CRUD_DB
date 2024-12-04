@@ -76,25 +76,27 @@ src/main/java/com/db/Desafio_CRUD_DB
    git clone https://github.com/seu-usuario/seu-repositorio.git
    cd seu-repositorio
 
-2. **Instale as dependências 🔄**
+2. **Instale as dependências 🔄** <br>
     O projeto utiliza o Maven para gerenciamento de dependências. Para instalar as dependências, execute:
    ```bash
    mvn clean install
    ```
 
-3. **Rodar o projeto ▶️**
+3. **Rodar o projeto ▶️** <br>
    Para rodar o projeto localmente, execute o seguinte comando:
    ```bash
    mvn spring-boot:run
    ```
    
-4.Acessar a API 🌍 A API estará disponível em **http://localhost:8080**. Você pode testar os endpoints da seguinte forma:
+4. **Acessar a API 🌍**  <br>
+   A API estará disponível em **http://localhost:8080**. Você pode testar os endpoints da seguinte forma:
 - Listar todas as pessoas: **GET /pessoas 📋**
 - Criar nova pessoa: **POST /pessoas 🆕**
 - Atualizar pessoa: **PUT /pessoas/{id} ✏️**
 - Excluir pessoa: **DELETE /pessoas/{id} 🗑️**
 
-5. Acessar Swagger 📜 Se o Swagger foi implementado, acesse a documentação da API no seguinte link:
+5. **Acessar Swagger 📜** <br>
+   Se o Swagger foi implementado, acesse a documentação da API no seguinte link:
    ```bash
    http://localhost:8080/swagger-ui/index.html#/
    ```
