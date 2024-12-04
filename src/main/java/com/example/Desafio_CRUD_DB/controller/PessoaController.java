@@ -14,34 +14,33 @@ public class PessoaController {
 
     private final PessoaService pessoaService;
 
-    public PessoaController(PessoaService pessoaService){
+    public PessoaController(PessoaService pessoaService) {
         this.pessoaService = pessoaService;
     }
 
     @GetMapping
-    public ResponseEntity<List<Pessoa>> listarTodas(){
+    public ResponseEntity<List<Pessoa>> listarTodas() {
         return ResponseEntity.ok(pessoaService.listarTodas());
     }
 
     @PostMapping
-    public ResponseEntity<?>  criarPessoa(@RequestBody Pessoa pessoa){
+    public ResponseEntity<?> criarPessoa(@RequestBody Pessoa pessoa) {
         try {
             Pessoa novaPessoa = pessoaService.criarPessoa(pessoa);
             return ResponseEntity.status(HttpStatus.CREATED).body(novaPessoa);
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-//        return ResponseEntity.ok(pessoaService.criarPessoa(pessoa));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> excluirPessoa(@PathVariable Long id){
+    public ResponseEntity<Void> excluirPessoa(@PathVariable Long id) {
         pessoaService.excluirPessoa(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}/idade")
-    public ResponseEntity<Integer> calcularIdade(@PathVariable Long id){
+    public ResponseEntity<Integer> calcularIdade(@PathVariable Long id) {
         return ResponseEntity.ok(pessoaService.calcularIdade(id));
     }
 }

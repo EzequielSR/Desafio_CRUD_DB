@@ -16,39 +16,39 @@ import java.util.List;
 public class PessoaService {
     private final PessoaRepository pessoaRepository;
 
-    public PessoaService(PessoaRepository pessoaRepository){
+    public PessoaService(PessoaRepository pessoaRepository) {
         this.pessoaRepository = pessoaRepository;
     }
 
-    public List<Pessoa> listarTodas(){
+    public List<Pessoa> listarTodas() {
         return pessoaRepository.findAll();
     }
 
-    public Pessoa buscarPorId(Long id){
+    public Pessoa buscarPorId(Long id) {
         return pessoaRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pessoa nao encontrada"));
     }
 
     @Transactional
-    public Pessoa criarPessoa(Pessoa pessoa){
-        if(pessoaRepository.existsByCpf(pessoa.getCpf())){
+    public Pessoa criarPessoa(Pessoa pessoa) {
+        if (pessoaRepository.existsByCpf(pessoa.getCpf())) {
             throw new IllegalArgumentException("CPF já cadastrado.");
         }
-        for (Endereco endereco : pessoa.getEnderecos()){
+        for (Endereco endereco : pessoa.getEnderecos()) {
             endereco.setPessoa(pessoa);
         }
         return pessoaRepository.save(pessoa);
     }
 
     @Transactional
-    public Pessoa atualizarPessoa(Long id, Pessoa dadosAtualizados){
-        Pessoa pessoaExistente = pessoaRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("Pessoa não encontrada"));
+    public Pessoa atualizarPessoa(Long id, Pessoa dadosAtualizados) {
+        Pessoa pessoaExistente = pessoaRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Pessoa não encontrada"));
 
         pessoaExistente.setNome(dadosAtualizados.getNome());
         pessoaExistente.setDataNascimento(dadosAtualizados.getDataNascimento());
         pessoaExistente.setCpf(dadosAtualizados.getCpf());
 
         pessoaExistente.getEnderecos().clear();
-        for (Endereco endereco : dadosAtualizados.getEnderecos()){
+        for (Endereco endereco : dadosAtualizados.getEnderecos()) {
             endereco.setPessoa(pessoaExistente);
             pessoaExistente.getEnderecos().add(endereco);
         }
@@ -56,8 +56,8 @@ public class PessoaService {
     }
 
     @Transactional
-    public void excluirPessoa(Long id){
-        Pessoa pessoa = pessoaRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("Pessoa não encontrada"));
+    public void excluirPessoa(Long id) {
+        Pessoa pessoa = pessoaRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Pessoa não encontrada"));
         Period.between(pessoa.getDataNascimento(), LocalDate.now());
     }
 
