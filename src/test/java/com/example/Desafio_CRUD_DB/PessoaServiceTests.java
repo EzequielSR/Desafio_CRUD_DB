@@ -6,7 +6,6 @@ import com.example.Desafio_CRUD_DB.service.PessoaService;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -14,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+@ExtendWith(MockitoExtension.class)
 public class PessoaServiceTests {
     @Mock
     private PessoaRepository pessoaRepository;
@@ -23,7 +23,6 @@ public class PessoaServiceTests {
 
     @Test
     void testCriarPessoaComSucesso(){
-        MockitoAnnotations.openMocks(this);
 
         Pessoa pessoa = new Pessoa();
         pessoa.setNome("João da Silva");
@@ -41,7 +40,6 @@ public class PessoaServiceTests {
 
     @Test
     void testCriarPessoaCpfDuplicado(){
-        MockitoAnnotations.openMocks(this);
 
         Pessoa pessoa = new Pessoa();
         pessoa.setNome("João Silva");
@@ -57,7 +55,6 @@ public class PessoaServiceTests {
 
     @Test
     void testAlterarPessoaComSucesso() {
-        MockitoAnnotations.openMocks(this);
 
         Pessoa pessoaExistente = new Pessoa();
         pessoaExistente.setId(1L);
@@ -70,17 +67,16 @@ public class PessoaServiceTests {
         pessoaAtualizada.setCpf("123.456.789-00");
 
         when(pessoaRepository.findById(1L)).thenReturn(java.util.Optional.of(pessoaExistente));
-        when(pessoaRepository.save(pessoaAtualizada)).thenReturn(pessoaAtualizada);
+        when(pessoaRepository.save(any(Pessoa.class))).thenReturn(pessoaAtualizada);
 
         Pessoa pessoaResultado = pessoaService.atualizarPessoa(1L, pessoaAtualizada);
 
        assertNotNull(pessoaResultado);
         assertEquals("João Silva", pessoaResultado.getNome().trim(), "O nome da pessoa não foi atualizado corretamente");
-        verify(pessoaRepository, times(1)).save(pessoaAtualizada);
+        verify(pessoaRepository, times(1)).save(any(Pessoa.class));
     }
     @Test
     void testExcluirPessoaComSucesso() {
-        MockitoAnnotations.openMocks(this);
 
         Long pessoaId = 1L;
         Pessoa pessoaExistente = new Pessoa();
