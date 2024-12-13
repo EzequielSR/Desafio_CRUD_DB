@@ -2,6 +2,8 @@
 
 Este repositório contém um desafio de implementação de um sistema CRUD em Java com Spring Boot. O sistema permite o gerenciamento de **Pessoas** e **Endereços**, onde cada Pessoa pode ter vários Endereços, criando um relacionamento de um-para-muitos.
 
+Anexo 📎: [CRUD - Pessoa 13.pdf](https://github.com/user-attachments/files/18112284/CRUD.-.Pessoa.13.1.pdf)
+
 ---
 
 ## Requisitos 📋
