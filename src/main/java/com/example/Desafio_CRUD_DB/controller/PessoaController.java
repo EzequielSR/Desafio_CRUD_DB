@@ -43,4 +43,10 @@ public class PessoaController {
     public ResponseEntity<Integer> calcularIdade(@PathVariable Long id) {
         return ResponseEntity.ok(pessoaService.calcularIdade(id));
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Pessoa> buscarPessoaPeloId(@PathVariable Long id) {
+        return ResponseEntity.ok(pessoaService.buscarPorId(id));
+    }
+
 }

@@ -8,6 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.web.server.ResponseStatusException;
 
 
 import static org.mockito.Mockito.*;
@@ -22,7 +23,7 @@ public class PessoaServiceTests {
     private PessoaService pessoaService;
 
     @Test
-    void testCriarPessoaComSucesso(){
+    void testCriarPessoaComSucesso() {
 
         Pessoa pessoa = new Pessoa();
         pessoa.setNome("João da Silva");
@@ -39,7 +40,7 @@ public class PessoaServiceTests {
     }
 
     @Test
-    void testCriarPessoaCpfDuplicado(){
+    void testCriarPessoaCpfDuplicado() {
 
         Pessoa pessoa = new Pessoa();
         pessoa.setNome("João Silva");
@@ -51,6 +52,36 @@ public class PessoaServiceTests {
 
         assertEquals("CPF já cadastrado.", exception.getMessage());
         verify(pessoaRepository, never()).save(pessoa);
+    }
+
+    @Test
+    void testBuscarPessoaPeloIdComSucesso() {
+        Pessoa pessoa1 = new Pessoa();
+        pessoa1.setId(1L);
+        pessoa1.setNome("Eduarda da Fonseca");
+
+        Pessoa pessoa2 = new Pessoa();
+        pessoa2.setId(2L);
+        pessoa2.setNome("José de Souza");
+
+        when(pessoaRepository.findById(1L)).thenReturn(java.util.Optional.of(pessoa1));
+
+        Pessoa pessoaEncontrada = pessoaService.buscarPorId(1L);
+
+
+        assertNotNull(pessoaEncontrada);
+        assertEquals(1L, pessoaEncontrada.getId());
+        verify(pessoaRepository, times(1)).findById(1L);
+    }
+
+    @Test
+    void testBuscarPessoaPeloIdSemSucesso() {
+        when(pessoaRepository.findById(1L)).thenReturn(java.util.Optional.empty());
+
+        Exception exception = assertThrows(ResponseStatusException.class, () -> pessoaService.buscarPorId(1L));
+
+        assertEquals("404 NOT_FOUND \"Pessoa nao encontrada\"", exception.getMessage());
+        verify(pessoaRepository, times(1)).findById(1L);
     }
 
     @Test
@@ -71,10 +102,12 @@ public class PessoaServiceTests {
 
         Pessoa pessoaResultado = pessoaService.atualizarPessoa(1L, pessoaAtualizada);
 
-       assertNotNull(pessoaResultado);
+        assertNotNull(pessoaResultado);
         assertEquals("João Silva", pessoaResultado.getNome().trim(), "O nome da pessoa não foi atualizado corretamente");
         verify(pessoaRepository, times(1)).save(any(Pessoa.class));
     }
+
+
     @Test
     void testExcluirPessoaComSucesso() {
 

@@ -30,7 +30,7 @@ public class Endereco {
     @NotBlank(message = "Estado é obrigatória")
     private String estado;
 
-    @NotBlank(message = "Rua é obrigatória")
+    @NotBlank(message = "CEP é obrigatória")
     private String cep;
 
     private final Boolean principal = false;
