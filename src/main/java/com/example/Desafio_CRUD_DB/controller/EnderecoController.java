@@ -2,6 +2,7 @@ package com.example.Desafio_CRUD_DB.controller;
 
 import com.example.Desafio_CRUD_DB.entity.Endereco;
 import com.example.Desafio_CRUD_DB.service.EnderecoService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +35,7 @@ public class EnderecoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Endereco> atualizarEndereco(@PathVariable Long id, @RequestBody Endereco dadosAtualizados) {
+    public ResponseEntity<Endereco> atualizarEndereco(@PathVariable Long id, @Valid @RequestBody Endereco dadosAtualizados) {
         return ResponseEntity.ok(enderecoService.atualizarEndereco(id, dadosAtualizados));
     }
 
