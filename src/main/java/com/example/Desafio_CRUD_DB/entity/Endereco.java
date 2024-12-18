@@ -38,4 +38,16 @@ public class Endereco {
     @ManyToOne
     @JoinColumn(name = "pessoa_id", nullable = false)
     private Pessoa pessoa;
+
+    public Endereco(){}
+
+    public Endereco(Long id, String rua, String numero, String bairro, String cidade, String estado, String cep) {
+        this.id = id;
+        this.rua = rua;
+        this.numero = numero;
+        this.bairro = bairro;
+        this.cidade = cidade;
+        this.estado = estado;
+        this.cep = cep;
+    }
 }

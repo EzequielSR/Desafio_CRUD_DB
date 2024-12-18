@@ -2,6 +2,7 @@ package com.example.Desafio_CRUD_DB.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,7 +24,7 @@ public class Pessoa {
     @NotBlank(message = "Nome é obrigatório")
     private String nome;
 
-    @NotBlank(message = "Data de nascimento é obrigatória")
+    @NotNull(message = "Data de nascimento é obrigatória")
     private LocalDate dataNascimento;
 
     @NotBlank(message = "CPF é obrigatório")
