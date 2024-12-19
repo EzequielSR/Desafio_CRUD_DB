@@ -1,9 +1,13 @@
 package com.example.Desafio_CRUD_DB.service;
 
+import com.example.Desafio_CRUD_DB.dto.PessoaDTO;
 import com.example.Desafio_CRUD_DB.entity.Endereco;
 import com.example.Desafio_CRUD_DB.entity.Pessoa;
 import com.example.Desafio_CRUD_DB.repository.PessoaRepository;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -20,6 +24,17 @@ public class PessoaService {
 
     public PessoaService(PessoaRepository pessoaRepository) {
         this.pessoaRepository = pessoaRepository;
+    }
+
+    @Autowired
+    private ModelMapper modelMapper;
+
+    public PessoaDTO convertToDTO(Pessoa pessoa){
+        return modelMapper.map(pessoa, PessoaDTO.class);
+    }
+
+    public Pessoa convertToEntity(@Valid PessoaDTO pessoaDTO){
+        return modelMapper.map(pessoaDTO, Pessoa.class);
     }
 
     public Page<Pessoa> listarTodas(Pageable pageable){
@@ -42,15 +57,15 @@ public class PessoaService {
     }
 
     @Transactional
-    public Pessoa atualizarPessoa(Long id, Pessoa dadosAtualizados) {
+    public Pessoa atualizarPessoa(Long id, Pessoa pessoaAtualizada) {
         Pessoa pessoaExistente = buscarPorId(id);
 
-        pessoaExistente.setNome(dadosAtualizados.getNome().trim());
-        pessoaExistente.setDataNascimento(dadosAtualizados.getDataNascimento());
-        pessoaExistente.setCpf(dadosAtualizados.getCpf());
+        pessoaExistente.setNome(pessoaAtualizada.getNome().trim());
+        pessoaExistente.setDataNascimento(pessoaAtualizada.getDataNascimento());
+        pessoaExistente.setCpf(pessoaAtualizada.getCpf());
 
         pessoaExistente.getEnderecos().clear();
-        for (Endereco endereco : dadosAtualizados.getEnderecos()) {
+        for (Endereco endereco : pessoaAtualizada.getEnderecos()) {
             endereco.setPessoa(pessoaExistente);
             pessoaExistente.getEnderecos().add(endereco);
         }

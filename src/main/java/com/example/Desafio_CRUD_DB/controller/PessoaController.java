@@ -1,5 +1,6 @@
 package com.example.Desafio_CRUD_DB.controller;
 
+import com.example.Desafio_CRUD_DB.dto.PessoaDTO;
 import com.example.Desafio_CRUD_DB.entity.Pessoa;
 import com.example.Desafio_CRUD_DB.service.PessoaService;
 import jakarta.validation.Valid;
@@ -9,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/pessoas")
@@ -22,24 +22,15 @@ public class PessoaController {
     }
 
     @GetMapping
-    public Page<Pessoa> listarTodas(Pageable pageable){
-        return pessoaService.listarTodas(pageable);
+    public Page<PessoaDTO> listarTodas(Pageable pageable) {
+        return pessoaService.listarTodas(pageable)
+                .map(pessoaService::convertToDTO);
     }
 
-    @PostMapping
-    public ResponseEntity<?> criarPessoa(@Valid @RequestBody Pessoa pessoa) {
-        try {
-            Pessoa novaPessoa = pessoaService.criarPessoa(pessoa);
-            return ResponseEntity.status(HttpStatus.CREATED).body(novaPessoa);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluirPessoa(@PathVariable Long id) {
-        pessoaService.excluirPessoa(id);
-        return ResponseEntity.noContent().build();
+    @GetMapping("/{id}")
+    public ResponseEntity<PessoaDTO> buscarPessoaPeloId(@PathVariable Long id) {
+        Pessoa pessoa = pessoaService.buscarPorId(id);
+        return ResponseEntity.ok(pessoaService.convertToDTO(pessoa));
     }
 
     @GetMapping("/{id}/idade")
@@ -47,9 +38,32 @@ public class PessoaController {
         return ResponseEntity.ok(pessoaService.calcularIdade(id));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Pessoa> buscarPessoaPeloId(@PathVariable Long id) {
-        return ResponseEntity.ok(pessoaService.buscarPorId(id));
+    @PostMapping
+    public ResponseEntity<?> criarPessoa(@Valid @RequestBody PessoaDTO pessoaDTO) {
+        try {
+            Pessoa pessoa = pessoaService.convertToEntity(pessoaDTO);
+            Pessoa novaPessoa = pessoaService.criarPessoa(pessoa);
+            return ResponseEntity.status(HttpStatus.CREATED).body(pessoaService.convertToDTO(novaPessoa));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<PessoaDTO> atualizarPessoa(@PathVariable Long id, @Valid @RequestBody PessoaDTO dadosAtualizados) {
+        try {
+            Pessoa pessoaAtualizada = pessoaService.convertToEntity(dadosAtualizados);
+            Pessoa pessoa = pessoaService.atualizarPessoa(id, pessoaAtualizada);
+            return ResponseEntity.ok(pessoaService.convertToDTO(pessoa));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> excluirPessoa(@PathVariable Long id) {
+        pessoaService.excluirPessoa(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

@@ -1,10 +1,13 @@
 package com.example.Desafio_CRUD_DB.service;
 
+import com.example.Desafio_CRUD_DB.dto.EnderecoDTO;
 import com.example.Desafio_CRUD_DB.entity.Endereco;
 import com.example.Desafio_CRUD_DB.entity.Pessoa;
 import com.example.Desafio_CRUD_DB.repository.EnderecoRepository;
 import com.example.Desafio_CRUD_DB.repository.PessoaRepository;
 import jakarta.transaction.Transactional;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -16,9 +19,20 @@ public class EnderecoService {
     private final EnderecoRepository enderecoRepository;
     private final PessoaRepository pessoaRepository;
 
-    public EnderecoService(EnderecoRepository enderecoRepository,PessoaRepository pessoaRepository) {
+    public EnderecoService(EnderecoRepository enderecoRepository, PessoaRepository pessoaRepository) {
         this.enderecoRepository = enderecoRepository;
         this.pessoaRepository = pessoaRepository;
+    }
+
+    @Autowired
+    private ModelMapper modelMapper;
+
+    public EnderecoDTO convertToDTO(Endereco endereco) {
+        return modelMapper.map(endereco, EnderecoDTO.class);
+    }
+
+    public Endereco convertToEntity(EnderecoDTO enderecoDTO) {
+        return modelMapper.map(enderecoDTO, Endereco.class);
     }
 
     public List<Endereco> listarTodos() {
@@ -33,7 +47,7 @@ public class EnderecoService {
 
     @Transactional
     public Endereco criarEndereco(Endereco endereco, Long pessoaId) {
-        Pessoa pessoa =  pessoaRepository.findById(pessoaId)
+        Pessoa pessoa = pessoaRepository.findById(pessoaId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pessoa não encontrada"));
         endereco.setPessoa(pessoa);
         return enderecoRepository.save(endereco);
