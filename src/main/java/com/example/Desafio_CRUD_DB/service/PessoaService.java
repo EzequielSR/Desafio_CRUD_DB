@@ -4,6 +4,8 @@ import com.example.Desafio_CRUD_DB.entity.Endereco;
 import com.example.Desafio_CRUD_DB.entity.Pessoa;
 import com.example.Desafio_CRUD_DB.repository.PessoaRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -20,8 +22,8 @@ public class PessoaService {
         this.pessoaRepository = pessoaRepository;
     }
 
-    public List<Pessoa> listarTodas() {
-        return pessoaRepository.findAll();
+    public Page<Pessoa> listarTodas(Pageable pageable){
+        return pessoaRepository.findAll(pageable);
     }
 
     public Pessoa buscarPorId(Long id) {

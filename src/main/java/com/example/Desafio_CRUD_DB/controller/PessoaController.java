@@ -3,6 +3,8 @@ package com.example.Desafio_CRUD_DB.controller;
 import com.example.Desafio_CRUD_DB.entity.Pessoa;
 import com.example.Desafio_CRUD_DB.service.PessoaService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,8 +22,8 @@ public class PessoaController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Pessoa>> listarTodas() {
-        return ResponseEntity.ok(pessoaService.listarTodas());
+    public Page<Pessoa> listarTodas(Pageable pageable){
+        return pessoaService.listarTodas(pageable);
     }
 
     @PostMapping

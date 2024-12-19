@@ -34,7 +34,17 @@ public class Pessoa {
     @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Endereco> enderecos = new ArrayList<>();
 
+    public Pessoa() {}
+
     public int getIdade() {
         return Period.between(this.dataNascimento, LocalDate.now()).getYears();
+    }
+
+    public Pessoa(Long id, String nome, LocalDate dataNascimento, String cpf, List<Endereco> enderecos) {
+        this.id = id;
+        this.nome = nome;
+        this.dataNascimento = dataNascimento;
+        this.cpf = cpf;
+        this.enderecos = enderecos;
     }
 }
