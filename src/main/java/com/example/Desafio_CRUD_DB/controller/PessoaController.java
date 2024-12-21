@@ -4,11 +4,18 @@ import com.example.Desafio_CRUD_DB.dto.PessoaDTO;
 import com.example.Desafio_CRUD_DB.entity.Pessoa;
 import com.example.Desafio_CRUD_DB.service.PessoaService;
 import jakarta.validation.Valid;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -65,5 +72,21 @@ public class PessoaController {
         pessoaService.excluirPessoa(id);
         return ResponseEntity.noContent().build();
     }
+
+    @ControllerAdvice
+    public class GlobalExceptionHandler {
+
+        @ExceptionHandler(MethodArgumentNotValidException.class)
+        public ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
+            // Coletar todos os erros de campo
+            List<String> errorMessages = ex.getBindingResult().getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .toList();
+
+            // Retornar uma resposta com status 400 e a lista de mensagens de erro
+            return new ResponseEntity<>(Collections.singletonMap("message", errorMessages), HttpStatus.BAD_REQUEST);
+        }
+    }
+
 
 }

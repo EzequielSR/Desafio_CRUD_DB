@@ -4,11 +4,14 @@ import com.example.Desafio_CRUD_DB.dto.EnderecoDTO;
 import com.example.Desafio_CRUD_DB.entity.Endereco;
 import com.example.Desafio_CRUD_DB.service.EnderecoService;
 import jakarta.validation.Valid;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,7 +38,7 @@ public class EnderecoController {
     }
 
     @PostMapping("/{pessoaId}")
-    public ResponseEntity<?> criarEndereco(@RequestBody EnderecoDTO enderecoDTO, @PathVariable Long pessoaId) {
+    public ResponseEntity<?> criarEndereco(@Valid @RequestBody EnderecoDTO enderecoDTO, @Valid @PathVariable Long pessoaId) {
         try {
             Endereco endereco = enderecoService.convertToEntity(enderecoDTO);
             Endereco novoEndereco = enderecoService.criarEndereco(endereco, pessoaId);
@@ -55,6 +58,21 @@ public class EnderecoController {
     public ResponseEntity<Void> excluirEndereco(@PathVariable Long id) {
         enderecoService.deletarEndereco(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @ControllerAdvice
+    public class GlobalExceptionHandler {
+
+        @ExceptionHandler(MethodArgumentNotValidException.class)
+        public ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
+            // Coletar todos os erros de campo
+            List<String> errorMessages = ex.getBindingResult().getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .toList();
+
+            // Retornar uma resposta com status 400 e a lista de mensagens de erro
+            return new ResponseEntity<>(Collections.singletonMap("message", errorMessages), HttpStatus.BAD_REQUEST);
+        }
     }
 
 }
