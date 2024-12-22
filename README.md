@@ -78,6 +78,8 @@ src/main/java/com/db/Desafio_CRUD_DB
 ├── resources
 └── application.properties
 
+___________________________________________
+
 src/test/java/com/db/Desafio_CRUD_DB
 ├── controller
 │   ├── EnderecoControllerTests.java
