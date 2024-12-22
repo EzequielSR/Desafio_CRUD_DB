@@ -21,7 +21,7 @@ import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
- class PessoaServiceTests {
+class PessoaServiceTests {
     @Mock
     private PessoaRepository pessoaRepository;
 
@@ -46,7 +46,7 @@ import static org.junit.jupiter.api.Assertions.*;
     }
 
     @Test
-    void testCriarPessoaComDadosInvalidos(){
+    void testCriarPessoaComDadosInvalidos() {
         Pessoa pessoaInvalida = new Pessoa();
         pessoaInvalida.setNome(null);
         pessoaInvalida.setCpf("");
@@ -126,7 +126,7 @@ import static org.junit.jupiter.api.Assertions.*;
     }
 
     @Test
-    void testAlterarPessoaInexistente(){
+    void testAlterarPessoaInexistente() {
         Long idInexistente = 199L;
         Pessoa pessoaAtualizada = new Pessoa();
         pessoaAtualizada.setNome("Abreu");
@@ -140,7 +140,7 @@ import static org.junit.jupiter.api.Assertions.*;
     }
 
     @Test
-    void testListarPessoasComSucesso(){
+    void testListarPessoasComSucesso() {
         Pessoa pessoa1 = new Pessoa();
         pessoa1.setId(1L);
         pessoa1.setNome("Ednelson");
@@ -149,7 +149,7 @@ import static org.junit.jupiter.api.Assertions.*;
         pessoa2.setId(2L);
         pessoa2.setNome("Jésica");
 
-        Pageable pageable = PageRequest.of(0,10);
+        Pageable pageable = PageRequest.of(0, 10);
         Page<Pessoa> paginarPessoas = new PageImpl<>(List.of(pessoa1, pessoa2), pageable, 2);
 
         when(pessoaRepository.findAll(pageable)).thenReturn(paginarPessoas);
@@ -179,7 +179,7 @@ import static org.junit.jupiter.api.Assertions.*;
     }
 
     @Test
-    void testExcluirPessoaInexistente(){
+    void testExcluirPessoaInexistente() {
         Long idInexistente = 299L;
 
         when(pessoaRepository.findById(idInexistente)).thenReturn(Optional.empty());
