@@ -21,6 +21,7 @@ Anexo 📎: [CRUD - Pessoa 13.pdf](https://github.com/user-attachments/files/181
 
 ### CRUD Pessoa
 - **Listar todas as pessoas e seus respectivos endereços** 📝
+- **Listar pessoa por id** 📜
 - **Criar uma nova pessoa** com um ou mais endereços 🆕
 - **Atualizar os dados de uma pessoa** e/ou seu(s) endereço(s) ✏️
 - **Excluir uma pessoa** e todos os seus endereços 🗑️
@@ -56,6 +57,7 @@ A estrutura do projeto está organizada da seguinte forma:
 src/main/java/com/db/Desafio_CRUD_DB
 ├── controller
 │   ├── PessoaController.java
+|   └── EnderecoController.java
 │  
 ├── entity
 │   ├── Pessoa.java
@@ -65,6 +67,7 @@ src/main/java/com/db/Desafio_CRUD_DB
 │   └── EnderecoRepository.java
 ├── service
 │   ├── PessoaService.java
+|   └── EnderecoService.java
 │  
 ├── resources
 └── application.properties
@@ -93,6 +96,7 @@ src/main/java/com/db/Desafio_CRUD_DB
 4. **Acessar a API 🌍**  <br>
    A API estará disponível em **http://localhost:8080**. Você pode testar os endpoints da seguinte forma:
 - Listar todas as pessoas: **GET /pessoas 📋**
+- Listar pessoa por id: **GET /pessoas/{id}📜**
 - Criar nova pessoa: **POST /pessoas 🆕**
 - Atualizar pessoa: **PUT /pessoas/{id} ✏️**
 - Excluir pessoa: **DELETE /pessoas/{id} 🗑️**
