@@ -56,18 +56,24 @@ A estrutura do projeto está organizada da seguinte forma:
 ```plaintext
 src/main/java/com/db/Desafio_CRUD_DB
 ├── controller
-│   ├── PessoaController.java
-|   └── EnderecoController.java
-│  
+│   ├── EnderecoController.java
+|   └── PessoaController.java
+|
+├── dto
+│   ├── EnderecoDTO.java
+|   └── PessoaDTO.java
+| 
 ├── entity
-│   ├── Pessoa.java
-│   └── Endereco.java
+│   ├── Endereco.java
+│   └── Pessoa.java
+|
 ├── repository
-│   ├── PessoaRepository.java
-│   └── EnderecoRepository.java
+│   ├── EnderecoRepository.java
+│   └── PessoaRepository.java
+|
 ├── service
-│   ├── PessoaService.java
-|   └── EnderecoService.java
+│   ├── EnderecoService.java
+|   └── PessoaService.java
 │  
 ├── resources
 └── application.properties
