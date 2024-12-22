@@ -77,6 +77,16 @@ src/main/java/com/db/Desafio_CRUD_DB
 │  
 ├── resources
 └── application.properties
+
+src/test/java/com/db/Desafio_CRUD_DB
+├── controller
+│   ├── EnderecoControllerTests.java
+|   └── PessoaControllerTests.java
+|
+└── service
+    ├── EnderecoServiceTests.java
+    └── PessoaServiceTests.java
+
 ```
 ---
 
